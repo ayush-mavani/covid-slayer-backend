@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/User');
 const Game = require('../models/Game');
 const { protect } = require('../middleware/auth');
+const dbConnect = require('../utils/dbConnect');
 
 const router = express.Router();
 
@@ -10,6 +11,9 @@ const router = express.Router();
 // @access  Private
 router.get('/profile', protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const user = await User.findById(req.user.id);
     
     res.status(200).json({
@@ -42,6 +46,9 @@ router.get('/profile', protect, async (req, res) => {
 // @access  Private
 router.put('/profile', protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const { fullName, avatar } = req.body;
     
     const updateData = {};
@@ -84,6 +91,9 @@ router.put('/profile', protect, async (req, res) => {
 // @access  Public
 router.get('/leaderboard', async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -120,6 +130,9 @@ router.get('/leaderboard', async (req, res) => {
 // @access  Private
 router.get('/recent-games', protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const limit = parseInt(req.query.limit) || 5;
 
     const recentGames = await Game.find({ player: req.user.id })

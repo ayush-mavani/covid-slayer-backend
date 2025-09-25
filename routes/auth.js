@@ -2,6 +2,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const { protect, sendTokenResponse } = require("../middleware/auth");
+const dbConnect = require("../utils/dbConnect");
 
 const router = express.Router();
 
@@ -26,6 +27,9 @@ router.post(
   ],
   async (req, res) => {
     try {
+      // Ensure database connection
+      await dbConnect();
+      
       // Check for validation errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -82,6 +86,9 @@ router.post(
   ],
   async (req, res) => {
     try {
+      // Ensure database connection
+      await dbConnect();
+      
       // Check for validation errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -132,6 +139,9 @@ router.post(
 // @access  Private
 router.get("/me", protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const user = await User.findById(req.user.id);
     res.status(200).json({
       success: true,

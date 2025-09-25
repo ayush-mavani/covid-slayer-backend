@@ -4,6 +4,7 @@ const Game = require('../models/Game');
 const User = require('../models/User');
 const { protect } = require('../middleware/auth');
 const { gameActions, checkGameEnd, generateCommentary } = require('../utils/gameLogic');
+const dbConnect = require('../utils/dbConnect');
 
 const router = express.Router();
 
@@ -17,6 +18,9 @@ router.post('/', [
     .withMessage('Game time must be between 30 and 300 seconds')
 ], protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -77,6 +81,9 @@ router.post('/', [
 // @access  Private
 router.get('/', protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
@@ -113,6 +120,9 @@ router.get('/', protect, async (req, res) => {
 // @access  Private
 router.get('/:id', protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const game = await Game.findOne({
       _id: req.params.id,
       player: req.user.id
@@ -165,6 +175,9 @@ router.post('/:id/action', [
     .withMessage('Invalid time remaining')
 ], protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -291,6 +304,9 @@ router.post('/:id/action', [
 // @access  Private
 router.get('/stats/summary', protect, async (req, res) => {
   try {
+    // Ensure database connection
+    await dbConnect();
+    
     const stats = await Game.aggregate([
       { $match: { player: req.user._id } },
       {

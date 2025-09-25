@@ -9,15 +9,8 @@ const dbConnect = require("./utils/dbConnect"); // <- import
 
 const app = express();
 
-// Connect to MongoDB
-dbConnect()
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-    process.exit(1); // Exit process with failure
-  });
+// Note: Database connection is handled per-route for Vercel serverless deployment
+// Each API route calls await dbConnect() to ensure connectivity
 // Security middleware
 app.use(helmet());
 app.use(
@@ -25,7 +18,8 @@ app.use(
     origin: [
       "https://covid-slayer-frontend.vercel.app",
       "http://localhost:3000",
-    ],
+      process.env.FRONTEND_URL, // Allow custom frontend URL via environment variable
+    ].filter(Boolean), // Remove undefined values
     credentials: true,
   })
 );
