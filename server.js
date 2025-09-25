@@ -4,10 +4,20 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const cookieParser = require("cookie-parser");
-require("dotenv").config({ path: ".env" });
+require("dotenv").config();
+const dbConnect = require("./utils/dbConnect"); // <- import
 
 const app = express();
 
+// Connect to MongoDB
+dbConnect()
+  .then(() => {
+    console.log("MongoDB connected");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1); // Exit process with failure
+  });
 // Security middleware
 app.use(helmet());
 app.use(
@@ -33,16 +43,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Cookie parser middleware
 app.use(cookieParser());
-
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    bufferCommands: false,
-  })
-  .then(() => console.log("MongoDB connected successfully"))
-  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
 app.use("/api/auth", require("./routes/auth"));
