@@ -41,6 +41,7 @@ mongoose
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      bufferCommands: false,
     }
   )
   .then(() => console.log("MongoDB connected successfully"))
