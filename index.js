@@ -22,7 +22,10 @@ dbConnect()
 app.use(helmet());
 app.use(
   cors({
-    origin: "*",
+    origin: [
+      "https://covid-slayer-frontend.vercel.app/",
+      "http://localhost:3000",
+    ],
     credentials: true,
   })
 );
