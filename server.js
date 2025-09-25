@@ -12,10 +12,10 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? "your-frontend-url"
-        : "http://localhost:3000",
+    origin: [
+      "https://covid-slayer-frontend.vercel.app",
+      "http://localhost:3000",
+    ],
     credentials: true,
   })
 );
