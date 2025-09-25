@@ -6,9 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest",
-    "build": "echo 'No build step required for Node.js'",
-    "vercel-build": "echo 'Vercel build completed'"
+    "test": "jest"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
