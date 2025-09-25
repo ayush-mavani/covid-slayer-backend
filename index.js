@@ -19,7 +19,7 @@ app.use(
       "https://covid-slayer-frontend.vercel.app",
       "http://localhost:3000",
       process.env.FRONTEND_URL, // Allow custom frontend URL via environment variable
-    ].filter(Boolean), // Remove undefined values
+    ].filter(Boolean),
     credentials: true,
   })
 );
