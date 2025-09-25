@@ -165,7 +165,7 @@ router.post("/logout", (req, res) => {
   res.cookie("token", "", {
     expires: new Date(0), // Expire immediately
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "strict",
   });
 

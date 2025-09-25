@@ -19,7 +19,10 @@ exports.protect = async (req, res, next) => {
     }
 
     console.log("req.headers.authorization", req.headers.authorization);
-    console.log("req.cookies.token", req.cookies.token ? "present" : "not present");
+    console.log(
+      "req.cookies.token",
+      req.cookies.token ? "present" : "not present"
+    );
 
     if (!token) {
       return res.status(401).json({
@@ -82,7 +85,7 @@ exports.sendTokenResponse = (user, statusCode, res) => {
   const options = {
     expires: new Date(Date.now() + expireTime),
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "strict",
   };
 
